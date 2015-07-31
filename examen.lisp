@@ -1,0 +1,43 @@
+(defun CrearExamen(id parcial nota)
+    (list :id id :parcial parcial :nota nota)
+)
+
+(defun PrincipalExamen(id)
+
+    (setq ope 3)
+    (loop (if (/= ope 0)
+            (progn
+                (run-shell-command "clear")
+                (LetraExamen)
+                (LetraMenuConfig "Examen    ")
+                (format t "~%Ingrese opcion: ")
+                (setq ope (read))
+                (cond
+                    ((= ope 1)
+                        (run-shell-command "clear")
+                        (LetraExamen)
+                        (format t "~%~%*****Anadir Examen*****~%")
+                        (addExamen id)
+                        (guardarExamen "examenes.db")
+                    )
+    
+                    ((= ope 2)
+                        (run-shell-command "clear")
+                        (LetraExamen)
+                        (format t "~%~%****Examenes Registradas****~%")
+                        (imprExamen id)
+                        (format t "~%Ingrese numero de examen a modificar: ")
+                        (setq nume (read-line))
+                        (format t "~%Nota: ")       
+                        (setq nota (read-line)) 
+
+                        (updateExamen (whereExamen :IdMateria id :numExamen nume) :nota nota)
+                        (guardarExamen "examenes.db")           
+                    )
+                )
+            )
+            (return 'fin)
+        )       
+    )   
+)
+
